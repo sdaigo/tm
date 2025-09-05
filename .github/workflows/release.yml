@@ -62,16 +62,18 @@ jobs:
         with:
           path: artifacts
       
-      - name: Create checksums
+      - name: Prepare release files
         run: |
           cd artifacts
+          # Move files from subdirectories to root
           for dir in */; do
             if [ -d "$dir" ]; then
-              cd "$dir"
-              sha256sum * > "../${dir%/}.sha256"
-              cd ..
+              mv "$dir"/* .
+              rmdir "$dir"
             fi
           done
+          # Create checksum file
+          sha256sum tm-darwin-universal > tm-darwin-universal.sha256
           ls -la
       
       - name: Create Release
@@ -81,7 +83,7 @@ jobs:
           prerelease: false
           generate_release_notes: true
           files: |
-            artifacts/**/*
-            artifacts/*.sha256
+            artifacts/tm-darwin-universal
+            artifacts/tm-darwin-universal.sha256
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
