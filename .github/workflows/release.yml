@@ -65,13 +65,12 @@ jobs:
       - name: Prepare release files
         run: |
           cd artifacts
-          # Move files from subdirectories to root
-          for dir in */; do
-            if [ -d "$dir" ]; then
-              mv "$dir"/* .
-              rmdir "$dir"
-            fi
-          done
+          # The artifact is in a directory with the same name
+          if [ -d "tm-darwin-universal" ]; then
+            mv tm-darwin-universal/tm-darwin-universal ./tm-binary
+            rmdir tm-darwin-universal
+            mv tm-binary tm-darwin-universal
+          fi
           # Create checksum file
           sha256sum tm-darwin-universal > tm-darwin-universal.sha256
           ls -la
