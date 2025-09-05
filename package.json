@@ -1,14 +1,18 @@
 {
-  "name": "opentui-playground",
+  "name": "tm",
+  "version": "1.0.0",
   "module": "src/index.tsx",
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun run --hot src/index.tsx",
-    "compile": "bun build --compile --minify --sourcemap=none ./src/index.tsx --outfile=dist/opentui-playground",
+    "dev": "NODE_ENV=development bun run --watch src/index.tsx",
+    "compile": "NODE_ENV=production bun build --compile --minify --sourcemap ./src/index.tsx --outfile=dist/tm",
     "format": "biome format src/",
+    "format:fix": "biome format --write src/",
     "check": "biome check src/",
-    "typecheck": "tsc --noEmit"
+    "check:fix": "biome check --write src/",
+    "typecheck": "tsc --noEmit",
+    "release": "./scripts/release.sh"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.3",
@@ -21,6 +25,8 @@
   "dependencies": {
     "@opentui/core": "^0.1.14",
     "@opentui/react": "^0.1.14",
-    "react": "^19.1.1"
+    "@reduxjs/toolkit": "^2.9.0",
+    "react": "^19.1.1",
+    "react-redux": "^9.2.0"
   }
 }

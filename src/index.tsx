@@ -1,15 +1,10 @@
-import { TextAttributes } from "@opentui/core";
 import { render } from "@opentui/react";
+import { Provider } from "react-redux";
+import Tui from "./shell/tui";
+import { store } from "./store";
 
-function App() {
-  return (
-    <box alignItems="center" justifyContent="center" flexGrow={1}>
-      <box justifyContent="center" alignItems="flex-end">
-        <ascii-font font="tiny" text="Open!" />
-        <text attributes={TextAttributes.DIM}>What will you build?</text>
-      </box>
-    </box>
-  );
-}
-
-render(<App />);
+render(
+  <Provider store={store}>
+    <Tui />
+  </Provider>,
+);

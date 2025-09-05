@@ -1,0 +1,110 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v1.0.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        include:
+          - name: Linux x64
+            os: ubuntu-latest
+            target: bun-linux-x64
+            artifact: tm-linux-x64
+            
+          - name: macOS ARM64
+            os: macos-latest
+            target: bun-darwin-arm64
+            artifact: tm-darwin-arm64
+            
+          - name: macOS x64
+            os: macos-latest
+            target: bun-darwin-x64
+            artifact: tm-darwin-x64
+            
+          - name: Windows x64
+            os: windows-latest
+            target: bun-windows-x64
+            artifact: tm-windows-x64.exe
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      
+      - name: Build binary
+        run: |
+          bun build --compile \
+            --target=${{ matrix.target }} \
+            --minify \
+            --sourcemap \
+            ./src/index.tsx \
+            --outfile=${{ matrix.artifact }}
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: ${{ matrix.artifact }}
+          retention-days: 1
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      
+      - name: Create checksums
+        run: |
+          cd artifacts
+          for dir in */; do
+            if [ -d "$dir" ]; then
+              cd "$dir"
+              sha256sum * > "../${dir%/}.sha256"
+              cd ..
+            fi
+          done
+          ls -la
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            artifacts/**/*
+            artifacts/*.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
