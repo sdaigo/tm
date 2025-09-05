@@ -1,0 +1,26 @@
+{
+  "name": "opentui-playground",
+  "module": "src/index.tsx",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run --hot src/index.tsx",
+    "compile": "bun build --compile --minify --sourcemap=none ./src/index.tsx --outfile=dist/opentui-playground",
+    "format": "biome format src/",
+    "check": "biome check src/",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.3",
+    "@types/bun": "latest",
+    "lefthook": "^1.12.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@opentui/core": "^0.1.14",
+    "@opentui/react": "^0.1.14",
+    "react": "^19.1.1"
+  }
+}

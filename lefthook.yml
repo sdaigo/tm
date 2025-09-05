@@ -1,0 +1,18 @@
+# EXAMPLE USAGE:
+#
+#   Refer for explanation to following link:
+#   https://lefthook.dev/configuration/
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: format
+      run: biome format {staged_files}
+      glob: "*.{js,ts,jsx,tsx}"
+
+    - name: check
+      run: biome check {staged_files}
+      glob: "*.{js,ts,jsx,tsx}"
+
+    - name: typecheck
+      run: tsc --noEmit
