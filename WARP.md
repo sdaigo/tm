@@ -115,16 +115,16 @@ User interface and formatting:
 
 ### Distribution
 - `bun run compile` で単一バイナリ `dist/tm` を生成
-- GitHub Releases からプラットフォーム別バイナリをダウンロード可能
+- GitHub Releases からmacOS向けバイナリをダウンロード可能
 
 ### CI/CD
 - **GitHub Actions** (.github/workflows/)
   - `ci.yml`: Push/PR時の自動テスト（型チェック、Lint、テスト、ビルド）
-  - `release.yml`: タグプッシュ時の自動リリース（全プラットフォーム向けビルド）
+  - `release.yml`: タグプッシュ時の自動リリース（macOS向けビルド）
 - **リリースプロセス**
   1. `bun run release <version>` でタグ作成・プッシュ
   2. GitHub Actionsが自動でビルド・リリース作成
-  3. Linux/macOS(ARM64/x64)/Windows向けバイナリが生成される
+  3. macOS向けバイナリが生成される
 
 ## What to extend next (seams)
 

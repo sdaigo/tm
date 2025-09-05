@@ -7,18 +7,13 @@ A tiny terminal timer built with @opentui/react and Redux Toolkit, compiled to a
 
 ## Installation
 
-### Download Pre-built Binary
+### Download Pre-built Binary (macOS only)
 
-Download the latest release for your platform from the [releases page](https://github.com/sdaigo/tm/releases).
+Download the latest release for macOS from the [releases page](https://github.com/sdaigo/tm/releases).
 
 ```bash
-# macOS (Apple Silicon)
-curl -L https://github.com/sdaigo/tm/releases/latest/download/tm-darwin-arm64 -o tm
-chmod +x tm
-./tm
-
-# Linux
-curl -L https://github.com/sdaigo/tm/releases/latest/download/tm-linux-x64 -o tm
+# macOS (Universal binary - works on both Intel and Apple Silicon)
+curl -L https://github.com/sdaigo/tm/releases/latest/download/tm-darwin-universal -o tm
 chmod +x tm
 ./tm
 ```
