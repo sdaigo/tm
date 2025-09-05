@@ -15,8 +15,16 @@ Download the latest release for macOS from the [releases page](https://github.co
 # macOS (Universal binary - works on both Intel and Apple Silicon)
 curl -L https://github.com/sdaigo/tm/releases/latest/download/tm-darwin-universal -o tm
 chmod +x tm
+
+# Remove quarantine attribute (required for unsigned binaries)
+xattr -cr tm
+
 ./tm
 ```
+
+> **Note for macOS users**: Since the binary is not code-signed, macOS may show a security warning.
+> The `xattr -cr` command removes the quarantine flag that triggers this warning.
+> Alternatively, you can go to System Settings > Privacy & Security to allow the app.
 
 ### Build from Source
 
